@@ -1,127 +1,83 @@
 import React, { useState } from 'react';
 import './components.css';
 
-function Form() {
-
-  const [datos, setDatos] = useState({
+const Form = ({ onSubmit }) => {
+  const [formData, setFormData] = useState({
     nombre: '',
-    cedula: '',
-    numero: '',
-    email: ''
+    email: '',
+    telefono: '',
+    mensaje: ''
   });
-  
 
-  const [usuarios, setUsuarios] = useState([]);
-
-
-  const actualizarDatos = (e) => {
-    setDatos({
-      ...datos,
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
       [e.target.name]: e.target.value
     });
   };
 
-
-  const guardarUsuario = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    
-
-    if (!datos.nombre || !datos.cedula || !datos.numero || !datos.email) {
-      alert('Por favor llena todos los campos');
-      return;
-    }
-
-
-    setUsuarios([...usuarios, datos]);
-    setDatos({
+    onSubmit(formData);
+    setFormData({
       nombre: '',
-      cedula: '',
-      numero: '',
-      email: ''
+      email: '',
+      telefono: '',
+      mensaje: ''
     });
   };
 
   return (
     <div className="form-container">
-      <h2>Registro de Usuarios</h2>
-      
-      <form onSubmit={guardarUsuario}>
+      <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label>Nombre y Apellido:</label>
+          <label htmlFor="nombre">Nombre:</label>
           <input
             type="text"
+            id="nombre"
             name="nombre"
-            value={datos.nombre}
-            onChange={actualizarDatos}
-            placeholder="ej: Juan Pérez"
+            value={formData.nombre}
+            onChange={handleChange}
+            required
           />
         </div>
-
         <div className="form-group">
-          <label>Número de Cédula:</label>
-          <input
-            type="text"
-            name="cedula"
-            value={datos.cedula}
-            onChange={actualizarDatos}
-            placeholder="ej: 12345678"
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Teléfono:</label>
-          <input
-            type="tel"
-            name="numero"
-            value={datos.numero}
-            onChange={actualizarDatos}
-            placeholder="ej: 0912345678"
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Correo:</label>
+          <label htmlFor="email">Email:</label>
           <input
             type="email"
+            id="email"
             name="email"
-            value={datos.email}
-            onChange={actualizarDatos}
-            placeholder="ej: juan@gmail.com"
+            value={formData.email}
+            onChange={handleChange}
+            required
           />
         </div>
-
-        <button type="submit">
-           Guardar Usuario
-        </button>
-      </form>
-
-      {usuarios.length > 0 && (
-        <div className="tabla-usuarios">
-          <h3> Usuarios Registrados ({usuarios.length})</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Nombre</th>
-                <th>Cédula</th>
-                <th>Teléfono</th>
-                <th>Correo</th>
-              </tr>
-            </thead>
-            <tbody>
-              {usuarios.map((usuario, i) => (
-                <tr key={i}>
-                  <td>{usuario.nombre}</td>
-                  <td>{usuario.cedula}</td>
-                  <td>{usuario.numero}</td>
-                  <td>{usuario.email}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="form-group">
+          <label htmlFor="telefono">Teléfono:</label>
+          <input
+            type="tel"
+            id="telefono"
+            name="telefono"
+            value={formData.telefono}
+            onChange={handleChange}
+            required
+          />
         </div>
-      )}
+        <div className="form-group">
+          <label htmlFor="mensaje">Mensaje:</label>
+          <input
+            type="text"
+            id="mensaje"
+            name="mensaje"
+            value={formData.mensaje}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <button type="submit">Enviar</button>
+      </form>
     </div>
   );
-}
+};
 
 export default Form;
